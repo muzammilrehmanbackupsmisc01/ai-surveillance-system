@@ -1,0 +1,30 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# YOLO model weights
+*.pt
+
+# Database and logs
+logs/*.db
+logs/*.csv
+
+# Snapshots
+data/snapshots/
+
+# Temporary video uploads
+data/test_videos/uploaded.mp4
+
+# VS Code settings
+.vscode/
+
+# System files
+Thumbs.db
+desktop.ini
+
+# YOLOv5 repo (clone separately)
+yolov5/

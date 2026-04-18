@@ -112,10 +112,11 @@ with tab1:
             st.stop()
 
         status_box.success("🟢 Detection Running")
+        
         frame_count = 0
-        SKIP = 3  # process every 3rd frame for speed
-        boxes     = []       # holds last known detections
-        triggered = False    # holds last known alert state
+        SKIP        = 3
+        boxes       = []      # last known detections
+        triggered   = False   # last known alert state
 
         while cap.isOpened():
             ret, frame = cap.read()
@@ -125,23 +126,19 @@ with tab1:
 
             frame_count += 1
 
-            # Calculate ROI zone based on frame dimensions
+            # Calculate ROI zone every frame from current frame size
             h, w = frame.shape[:2]
             zone = (
                 int(w * roi_x1 / 100), int(h * roi_y1 / 100),
                 int(w * roi_x2 / 100), int(h * roi_y2 / 100)
             )
 
-            # Run detection every SKIP frames
+            # ── Run detection every SKIP frames ──────────────────
             if frame_count % SKIP == 0:
-                results  = detector.detect(frame)
-                boxes    = detector.get_boxes(results)
-                in_zone  = [b for b in boxes if detector.is_in_zone(b, zone)]
+                results   = detector.detect(frame)
+                boxes     = detector.get_boxes(results)
+                in_zone   = [b for b in boxes if detector.is_in_zone(b, zone)]
                 triggered = len(in_zone) > 0
-
-                # Draw zone and boxes
-                frame = detector.draw_zone(frame, zone, triggered)
-                frame = detector.draw_boxes(frame, boxes, alert=triggered)
 
                 # Trigger alert if someone is in restricted zone
                 if triggered and enable_alarm:
@@ -156,25 +153,35 @@ with tab1:
                         )
                         alert_box.error(f"🚨 ALERT! Intruder in {event['zone']}")
 
-                # Update sidebar stats
                 detection_box.metric("Persons Detected", len(boxes))
 
-            # Add timestamp to frame
+            # ── Draw on EVERY frame ───────────────────────────────
+
+            # 1. Always draw red ROI zone rectangle
+            frame = detector.draw_zone(frame, zone)
+
+            # 2. Always draw green boxes using last known detections
+            if boxes:
+                frame = detector.draw_boxes(frame, boxes)
+
+            # 3. HUD overlay
+            frame = detector.draw_hud(frame, len(boxes), alert_active=triggered)
+
+            # 4. Timestamp
             ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             cv2.putText(frame, ts, (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
 
-            # Draw HUD overlay
-            frame = detector.draw_hud(frame, len(boxes), alert_active=triggered)
-
-            # Display frame (convert BGR to RGB for Streamlit)
+            # ── Send frame to dashboard ───────────────────────────
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame_placeholder.image(frame_rgb, channels="RGB", use_container_width=True)
 
-            # Check stop button
             if stop_btn:
                 break
 
+        cap.release()
+        status_box.warning("⏹ Detection Stopped")
+        
         cap.release()
         status_box.warning("⏹ Detection Stopped")
 

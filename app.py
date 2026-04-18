@@ -22,8 +22,21 @@ st.set_page_config(
 )
 
 # ─── HEADER ───────────────────────────────────────────────────
-st.title("🎥 AI-Powered Surveillance System")
-st.markdown("*Theft Detection & Criminal Identification · GSCWU Capstone Project*")
+import config
+
+st.title(f"🎥 {config.PROJECT_NAME}")
+st.markdown(f"*{config.PROJECT_TITLE}*")
+
+with st.expander("ℹ️ Project Info", expanded=False):
+    col1, col2, col3 = st.columns(3)
+    col1.markdown(f"**University:** {config.UNIVERSITY}")
+    col1.markdown(f"**Department:** {config.DEPARTMENT}")
+    col2.markdown(f"**Supervisor:** {config.SUPERVISOR}")
+    col2.markdown(f"**Version:** {config.VERSION}")
+    col3.markdown(f"**Students:**")
+    for s in config.STUDENTS:
+        col3.markdown(f"- {s['name']} `{s['reg']}`")
+
 st.divider()
 
 # ─── SIDEBAR ──────────────────────────────────────────────────

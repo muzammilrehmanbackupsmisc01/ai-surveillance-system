@@ -1,3 +1,14 @@
+# ================================================================
+#  Module      : detector.py — Surveillance Detection Engine
+#  Project     : AI-Powered Surveillance System
+#  University  : GSCWU Bahawalpur | Dept. of CS & IT
+#  Supervisor  : Dr. Amna Ikram
+#  Students    : Fatima Majeed (BSCS1FA22-1057)
+#                Fatima-tul-Zahra (BSCS1FA22-1051)
+#  Description : Loads YOLOv5s model, runs person detection,
+#                draws bounding boxes, checks ROI zone intrusion.
+# ================================================================
+
 import torch
 import cv2
 import sys

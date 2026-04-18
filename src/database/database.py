@@ -1,3 +1,14 @@
+# ================================================================
+#  Module      : database.py — SQLite Event Logger
+#  Project     : AI-Powered Surveillance System
+#  University  : GSCWU Bahawalpur | Dept. of CS & IT
+#  Supervisor  : Dr. Amna Ikram
+#  Students    : Fatima Majeed (BSCS1FA22-1057)
+#                Fatima-tul-Zahra (BSCS1FA22-1051)
+#  Description : Creates and manages SQLite database for logging
+#                all detection events, snapshots, and exports.
+# ================================================================
+
 import sqlite3
 import pandas as pd
 import os

@@ -1,3 +1,14 @@
+# ================================================================
+#  Module      : alert_manager.py — Alert & Notification System
+#  Project     : AI-Powered Surveillance System
+#  University  : GSCWU Bahawalpur | Dept. of CS & IT
+#  Supervisor  : Dr. Amna Ikram
+#  Students    : Fatima Majeed (BSCS1FA22-1057)
+#                Fatima-tul-Zahra (BSCS1FA22-1051)
+#  Description : Handles alarm sound, snapshot capture, cooldown,
+#                and alert event data generation.
+# ================================================================
+
 import cv2
 import os
 import winsound

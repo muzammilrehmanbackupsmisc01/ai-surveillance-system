@@ -114,6 +114,8 @@ with tab1:
         status_box.success("🟢 Detection Running")
         frame_count = 0
         SKIP = 3  # process every 3rd frame for speed
+        boxes     = []       # holds last known detections
+        triggered = False    # holds last known alert state
 
         while cap.isOpened():
             ret, frame = cap.read()
@@ -160,7 +162,10 @@ with tab1:
             # Add timestamp to frame
             ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             cv2.putText(frame, ts, (10, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+
+            # Draw HUD overlay
+            frame = detector.draw_hud(frame, len(boxes), alert_active=triggered)
 
             # Display frame (convert BGR to RGB for Streamlit)
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
